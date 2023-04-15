@@ -1,0 +1,6 @@
+pandas
+yfinance
+ta
+line-bot-sdk
+python-dotenv
+schedule
