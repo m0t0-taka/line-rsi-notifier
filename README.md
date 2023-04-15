@@ -57,9 +57,8 @@ Google Cloud Functions のログを確認する方法
 
 - CLI でうまくいかなかったためすべて GUI でデプロイ
 - Cloud Functions の設定
-  - トリガータイプ HTTP
-  - 未認証の呼び出しを許可
-  - HTTPS はオン
+  - トリガータイプ HTTP ではなく Cloud Pub/Sub を選択する
+    Cloud Scheduler を使用して Cloud Function を定期的に実行するためにはこちらを選択する
   - 最終的に記述したコードは以下 2 ファイル
 - Cloud Scheduler の設定
 

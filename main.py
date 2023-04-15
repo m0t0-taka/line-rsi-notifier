@@ -32,23 +32,28 @@ def send_line_notification(message):
     print("LINE message sent:", message)
 
 def check_rsi_and_notify(ticker_symbols):
+    all_last_rsi_over_25 = True
+
     for ticker_symbol in ticker_symbols:
         # 各ティッカーシンボルの株価データを取得
         data = get_stock_data(ticker_symbol)
-        print(ticker_symbol)
-        print("data", data)
+
         # RSIを計算
         rsi = calculate_rsi(data)
-        print("rsi", rsi)
 
         # 最新のRSIを取得
         last_rsi = rsi.iloc[-1]
-        print("last_rsi", last_rsi)
 
-        # 最新のRSIが20未満の場合、LINEで通知を送る
+        # 最新のRSIが25未満の場合、LINEで通知を送る
         if last_rsi < 25:
+            all_last_rsi_over_25 = False
             message = f"{ticker_symbol}の日足RSIが25を切りました。\n現在のRSI: {last_rsi:.2f}\nチャンス！"
             send_line_notification(message)
+
+    # すべての最新のRSIが25以上の場合、待つことをお勧めするメッセージを送信
+    if all_last_rsi_over_25:
+        message = "今はまだ待つときです。"
+        send_line_notification(message)
 
 def job():
     # 監視するティッカーシンボルのリスト
@@ -58,10 +63,10 @@ def job():
     check_rsi_and_notify(ticker_symbols)
 
 # 日本時間0時前後に毎日定期実行するため、UTC時間で15時00分に実行するように設定
-schedule.every().day.at("15:00").do(job)
-# job()
+# schedule.every().day.at("15:00").do(job)
+job()
 
 # 定期実行を開始
-while True:
-    schedule.run_pending()
-    time.sleep(1)
+# while True:
+#     schedule.run_pending()
+#     time.sleep(1)
